@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/tvNoteItem"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginTop="15dp"
+    tools:text="Hello!"
+    tools:background="#97A50D"
+    android:textSize="30sp"
+    android:textColor="@color/purple_500"
+    android:padding="8dp">
+
+</TextView>
