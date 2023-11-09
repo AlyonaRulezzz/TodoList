@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Todo List</string>
     <string name="todolist_add_button_cd">TODOLIST add button</string>
+    <string name="enter_note_hint">Введите заметку</string>
+    <string name="lowPriority">Низкий</string>
+    <string name="middlePriority">Средний</string>
+    <string name="highPriority">Высокий</string>
+    <string name="btnSave">Сохранить</string>
 </resources>
