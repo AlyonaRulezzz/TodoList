@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rvNotes;
     FloatingActionButton btnAdd;
 
+//    private ArrayList<Note> notes = new ArrayList<>();
     private Database database = Database.getInstance();
 
     @SuppressLint("ResourceAsColor")
@@ -50,10 +51,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNotes() {
-        rvNotes.removeAllViews();
+        linearLayoutForTodoList.removeAllViews();
 
         for (Note note : database.getNotes()) {
-//            View view = getLayoutInflater().inflate(R.layout.note_item, rvNotes, false);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            rvNotes.addView(view);
+            linearLayoutForTodoList.addView(view);
         }
     }
 

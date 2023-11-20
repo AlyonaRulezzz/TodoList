@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
-
-    private ArrayList<Note> notes = new ArrayList<>();
+    private ArrayList<Note> notes = new ArrayList<Note>();
 
     public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
@@ -21,31 +20,30 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
 
     @NonNull
     @Override
-    public VHNotes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterNotes.VHNotes onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
         return new VHNotes(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VHNotes holder, int position) {
-
+    public void onBindViewHolder(@NonNull AdapterNotes.VHNotes holder, int position) {
         Note note = notes.get(position);
 
         holder.tvNoteItem.setText(note.getText());
 
-            int colorResId;
-            switch (note.getPriority()) {
-                case 0:
-                    colorResId = android.R.color.holo_green_light;
-                    break;
-                case 1:
-                    colorResId = android.R.color.holo_orange_light;
-                    break;
-                default:
-                    colorResId = android.R.color.holo_red_light;
-            }
-            int color = ContextCompat.getColor(holder.itemView.getContext(), colorResId);
-            holder.tvNoteItem.setBackgroundColor(color);
+        int colorResId;
+        switch (note.getPriority()) {
+            case 0:
+                colorResId = android.R.color.holo_green_light;
+                break;
+            case 1:
+                colorResId = android.R.color.holo_orange_light;
+                break;
+            default:
+                colorResId = android.R.color.holo_red_light;
+        }
+        int color = ContextCompat.getColor(holder.itemView.getContext(), colorResId);
+        holder.tvNoteItem.setBackgroundColor(color);
     }
 
     @Override
@@ -54,8 +52,7 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
     }
 
     class VHNotes extends RecyclerView.ViewHolder {
-
-        private TextView tvNoteItem;
+        TextView tvNoteItem;
 
         public VHNotes(@NonNull View itemView) {
             super(itemView);
