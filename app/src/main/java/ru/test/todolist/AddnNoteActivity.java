@@ -20,6 +20,8 @@ public class AddnNoteActivity extends AppCompatActivity {
     private RadioButton rbMiddlePriority;
     private Button btnSave;
 
+    Database database = Database.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,9 @@ public class AddnNoteActivity extends AppCompatActivity {
     private void btnSaveOnClick() {
         String text = etNote.getText().toString().trim();
         int priority = getPriority();
+
+        database.add(new Note(database.getNotes().size(), text, priority));
+        finish();
     }
 
     private int getPriority() {

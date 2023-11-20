@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout linearLayoutForTodoList;
     FloatingActionButton btnAdd;
 
+//    private ArrayList<Note> notes = new ArrayList<>();
+    private Database database = Database.getInstance();
+
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +34,25 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
-        Random random = new Random();
-        for (int i = 0; i < 20; i++) {
-            Note note = new Note(i, "Note " + i, random.nextInt(3));
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = AddnNoteActivity.newIntent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showNotes();
+    }
+
+    private void showNotes() {
+        linearLayoutForTodoList.removeAllViews();
+
+        for (Note note : database.getNotes()) {
             View view = getLayoutInflater().inflate(R.layout.note_item, linearLayoutForTodoList, false);
             @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvNoteItem = view.findViewById(R.id.tvNoteItem);
 
@@ -56,14 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
             linearLayoutForTodoList.addView(view);
         }
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = AddnNoteActivity.newIntent(MainActivity.this);
-                startActivity(intent);
-            }
-        });
     }
 
     private void initViews() {
