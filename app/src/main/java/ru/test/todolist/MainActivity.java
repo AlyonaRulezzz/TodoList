@@ -36,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         adapterNotes = new AdapterNotes();
+        adapterNotes.setIonClickListener(new AdapterNotes.IonClickListener() {
+            @Override
+            public void onClick(Note note) {
+                database.remove(note.getId());
+                showNotes();
+            }
+        });
         rvNotes.setAdapter(adapterNotes);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
