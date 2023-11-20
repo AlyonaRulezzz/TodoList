@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView rvNotes;
     FloatingActionButton btnAdd;
+    AdapterNotes adapterNotes;
 
 //    private ArrayList<Note> notes = new ArrayList<>();
     private Database database = Database.getInstance();
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initViews();
+        adapterNotes = new AdapterNotes();
+        rvNotes.setAdapter(adapterNotes);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,20 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNotes() {
-        linearLayoutForTodoList.removeAllViews();
-
-        for (Note note : database.getNotes()) {
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    database.remove(note.getId());
-                    showNotes();
-                }
-            });
-
-            linearLayoutForTodoList.addView(view);
-        }
+        adapterNotes.setNotes(database.getNotes());
     }
 
     private void initViews() {

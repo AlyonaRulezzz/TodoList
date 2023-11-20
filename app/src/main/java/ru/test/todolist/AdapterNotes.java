@@ -16,6 +16,7 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
 
     public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
+        notifyDataSetChanged();
     }
 
     @NonNull
