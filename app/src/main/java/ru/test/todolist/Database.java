@@ -29,9 +29,9 @@ public class Database {
     }
 
     public void remove(int id) {
-        for (Note note : notes) {
-            if (note.getId() == id) {
-                notes.remove(note);
+        for (int i = 0; i < notes.size(); i++) {
+            if (notes.get(i).getId() == id) {
+                notes.remove(notes.get(i));
             }
         }
     }
