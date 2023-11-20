@@ -2,6 +2,7 @@ package ru.test.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -20,10 +21,9 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    LinearLayout linearLayoutForTodoList;
+    RecyclerView rvNotes;
     FloatingActionButton btnAdd;
 
-//    private ArrayList<Note> notes = new ArrayList<>();
     private Database database = Database.getInstance();
 
     @SuppressLint("ResourceAsColor")
@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNotes() {
-        linearLayoutForTodoList.removeAllViews();
+        rvNotes.removeAllViews();
 
         for (Note note : database.getNotes()) {
-            View view = getLayoutInflater().inflate(R.layout.note_item, linearLayoutForTodoList, false);
+//            View view = getLayoutInflater().inflate(R.layout.note_item, rvNotes, false);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,30 +63,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvNoteItem = view.findViewById(R.id.tvNoteItem);
-
-            tvNoteItem.setText(note.getText());
-
-            int colorResId;
-            switch (note.getPriority()) {
-                case 0:
-                    colorResId = android.R.color.holo_green_light;
-                    break;
-                case 1:
-                    colorResId = android.R.color.holo_orange_light;
-                    break;
-                default:
-                    colorResId = android.R.color.holo_red_light;
-            }
-            int color = ContextCompat.getColor(this, colorResId);
-            tvNoteItem.setBackgroundColor(color);
-
-            linearLayoutForTodoList.addView(view);
+            rvNotes.addView(view);
         }
     }
 
     private void initViews() {
-        linearLayoutForTodoList = findViewById(R.id.linearLayoutForTodoList);
+        rvNotes = findViewById(R.id.rvNotes);
         btnAdd = findViewById(R.id.btnAdd);
     }
 }
