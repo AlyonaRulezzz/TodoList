@@ -13,15 +13,19 @@ import java.util.ArrayList;
 
 public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
     private ArrayList<Note> notes = new ArrayList<Note>();
-    private IonClickListener ionClickListener;
+    private IonNoteClickListener ionNoteClickListener;
 
     public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
         notifyDataSetChanged();
     }
 
-    public void setIonClickListener(IonClickListener ionClickListener) {
-        this.ionClickListener = ionClickListener;
+    public void setIonNoteClickListener(IonNoteClickListener ionNoteClickListener) {
+        this.ionNoteClickListener = ionNoteClickListener;
+    }
+
+    public ArrayList<Note> getNotes() {
+        return new ArrayList<Note>(notes);
     }
 
     @NonNull
@@ -54,8 +58,8 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ionClickListener != null) {
-                    ionClickListener.onClick(note);
+                if (ionNoteClickListener != null) {
+                    ionNoteClickListener.onNoteClick(note);
                 }
             }
         });
@@ -75,7 +79,7 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
         }
     }
 
-    interface IonClickListener {
-        void onClick(Note note);
+    interface IonNoteClickListener {
+        void onNoteClick(Note note);
     }
 }

@@ -1,22 +1,16 @@
 package ru.test.todolist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton btnAdd;
     AdapterNotes adapterNotes;
 
-//    private ArrayList<Note> notes = new ArrayList<>();
+    //    private ArrayList<Note> notes = new ArrayList<>();
     private Database database = Database.getInstance();
 
     @SuppressLint("ResourceAsColor")
@@ -36,13 +30,37 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         adapterNotes = new AdapterNotes();
-        adapterNotes.setIonClickListener(new AdapterNotes.IonClickListener() {
+        adapterNotes.setIonNoteClickListener(new AdapterNotes.IonNoteClickListener() {
             @Override
-            public void onClick(Note note) {
-                database.remove(note.getId());
-                showNotes();
+            public void onNoteClick(Note note) {
+//                database.remove(note.getId());
+//                showNotes();
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(
+                        0,
+                        ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT
+                ) {
+                    @Override
+                    public boolean onMove(
+                            @NonNull RecyclerView recyclerView,
+                            @NonNull RecyclerView.ViewHolder viewHolder,
+                            @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        int position = viewHolder.getAdapterPosition();
+                        Note note = adapterNotes.getNotes().get(position);
+                        database.remove(note.getId());
+                        showNotes();
+                    }
+                });
+
+        itemTouchHelper.attachToRecyclerView(rvNotes);
         rvNotes.setAdapter(adapterNotes);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
