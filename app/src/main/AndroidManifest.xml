@@ -13,7 +13,7 @@
         android:theme="@style/Theme.TodoList"
         tools:targetApi="31">
         <activity
-            android:name=".AddnNoteActivity"
+            android:name=".AddNoteActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

@@ -13,14 +13,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-public class AddnNoteActivity extends AppCompatActivity {
+public class AddNoteActivity extends AppCompatActivity {
 
     private EditText etNote;
     private RadioButton rbLowPriority;
     private RadioButton rbMiddlePriority;
     private Button btnSave;
 
-    Database database = Database.getInstance();
+//    Database database = Database.getInstance();
+    NoteDatabase noteDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class AddnNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addn_note);
 
         initViews();
+        noteDatabase = NoteDatabase.getInstance(getApplication());
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +44,9 @@ public class AddnNoteActivity extends AppCompatActivity {
         String text = etNote.getText().toString().trim();
         int priority = getPriority();
 
-        database.add(new Note(database.getNotes().size(), text, priority));
+//        database.add(new Note(database.getNotes().size(), text, priority));
+        noteDatabase.notesDAO().add(new Note(0, text, priority));
+
         finish();
     }
 
@@ -65,7 +70,7 @@ public class AddnNoteActivity extends AppCompatActivity {
     }
 
     public static Intent newIntent(Context context) {
-        return new Intent(context, AddnNoteActivity.class);
+        return new Intent(context, AddNoteActivity.class);
     }
 
     @Override
