@@ -10,12 +10,13 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.VHNotes> {
-    private ArrayList<Note> notes = new ArrayList<Note>();
+    private List<Note> notes = new ArrayList<Note>();
     private IonNoteClickListener ionNoteClickListener;
 
-    public void setNotes(ArrayList<Note> notes) {
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
         notifyDataSetChanged();
     }

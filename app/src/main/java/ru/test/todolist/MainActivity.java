@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
     AdapterNotes adapterNotes;
 
     //    private ArrayList<Note> notes = new ArrayList<>();
-    private Database database = Database.getInstance();
+//    private Database database = Database.getInstance();
+    private NoteDatabase noteDatabase;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initViews();
+        noteDatabase = NoteDatabase.getInstance(getApplication());
         adapterNotes = new AdapterNotes();
         adapterNotes.setIonNoteClickListener(new AdapterNotes.IonNoteClickListener() {
             @Override
@@ -55,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         int position = viewHolder.getAdapterPosition();
                         Note note = adapterNotes.getNotes().get(position);
-                        database.remove(note.getId());
+//                        database.remove(note.getId());
+                        noteDatabase.notesDAO().remove(note.getId());
                         showNotes();
                     }
                 });
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNotes() {
-        adapterNotes.setNotes(database.getNotes());
+        adapterNotes.setNotes(noteDatabase.notesDAO().getNotes());
     }
 
     private void initViews() {
