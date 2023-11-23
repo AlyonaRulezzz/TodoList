@@ -21,13 +21,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView rvNotes;
-    FloatingActionButton btnAdd;
-    AdapterNotes adapterNotes;
+    private RecyclerView rvNotes;
+    private FloatingActionButton btnAdd;
+    private AdapterNotes adapterNotes;
+    private MainViewModel mainViewModel;
 
     //    private ArrayList<Note> notes = new ArrayList<>();
 //    private Database database = Database.getInstance();
-    private NoteDatabase noteDatabase;
+//    private NoteDatabase noteDatabase;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -36,10 +37,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initViews();
-        noteDatabase = NoteDatabase.getInstance(getApplication());
+//        noteDatabase = NoteDatabase.getInstance(getApplication());
 
-        LiveData<List<Note>> notes = noteDatabase.notesDAO().getNotes();
-        notes.observe(this, new Observer<List<Note>>() {
+//        LiveData<List<Note>> notes = noteDatabase.notesDAO().getNotes();
+        mainViewModel = new MainViewModel(getApplication()); //
+        mainViewModel.getNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
                 adapterNotes.setNotes(notes);
@@ -72,14 +74,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         int position = viewHolder.getAdapterPosition();
                         Note note = adapterNotes.getNotes().get(position);
+                        mainViewModel.remove(note.getId());
 //                        database.remove(note.getId());
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                noteDatabase.notesDAO().remove(note.getId());
-                            }
-                        });
-                        thread.start();
+//                        Thread thread = new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                noteDatabase.notesDAO().remove(note.getId());
+//                            }
+//                        });
+//                        thread.start();
                     }
                 });
 
