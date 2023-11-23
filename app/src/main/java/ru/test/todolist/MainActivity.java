@@ -2,6 +2,8 @@ package ru.test.todolist;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     //    private ArrayList<Note> notes = new ArrayList<>();
 //    private Database database = Database.getInstance();
     private NoteDatabase noteDatabase;
-    private Handler handler = new Handler(Looper.getMainLooper());
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -36,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         noteDatabase = NoteDatabase.getInstance(getApplication());
+
+        LiveData<List<Note>> notes = noteDatabase.notesDAO().getNotes();
+        notes.observe(this, new Observer<List<Note>>() {
+            @Override
+            public void onChanged(List<Note> notes) {
+                adapterNotes.setNotes(notes);
+            }
+        });
+
         adapterNotes = new AdapterNotes();
         adapterNotes.setIonNoteClickListener(new AdapterNotes.IonNoteClickListener() {
             @Override
@@ -67,12 +77,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 noteDatabase.notesDAO().remove(note.getId());
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        showNotes();
-                                    }
-                                });
                             }
                         });
                         thread.start();
@@ -89,28 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        showNotes();
-    }
-
-    private void showNotes() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Note> notes = noteDatabase.notesDAO().getNotes();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapterNotes.setNotes(notes);
-                    }
-                });
-            }
-        });
-        thread.start();
     }
 
     private void initViews() {
