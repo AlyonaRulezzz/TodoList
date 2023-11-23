@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,8 +23,8 @@ public class AddNoteActivity extends AppCompatActivity {
     private Button btnSave;
 
 //    Database database = Database.getInstance();
-    NoteDatabase noteDatabase;
-
+    private NoteDatabase noteDatabase;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,19 @@ public class AddNoteActivity extends AppCompatActivity {
         int priority = getPriority();
 
 //        database.add(new Note(database.getNotes().size(), text, priority));
-        noteDatabase.notesDAO().add(new Note(0, text, priority));
-
-        finish();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                noteDatabase.notesDAO().add(new Note(0, text, priority));
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 
     private int getPriority() {
