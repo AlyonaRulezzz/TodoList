@@ -5,11 +5,14 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
     private NoteDatabase noteDatabase;
+    private int count = 0;
+    private MutableLiveData<Integer> countLD = new MutableLiveData<>();
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -28,5 +31,14 @@ public class MainViewModel extends AndroidViewModel {
             }
         });
         thread.start();
+    }
+
+    public void addAndShowCount() {
+        count++;
+        countLD.setValue(count);
+    }
+
+    public LiveData<Integer> getCountLD() {
+        return countLD;
     }
 }

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -48,12 +49,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mainViewModel.getCountLD().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer count) {
+                Toast.makeText(MainActivity.this, count.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         adapterNotes = new AdapterNotes();
         adapterNotes.setIonNoteClickListener(new AdapterNotes.IonNoteClickListener() {
             @Override
             public void onNoteClick(Note note) {
 //                database.remove(note.getId());
 //                showNotes();
+                //
+                mainViewModel.addAndShowCount();
             }
         });
 
