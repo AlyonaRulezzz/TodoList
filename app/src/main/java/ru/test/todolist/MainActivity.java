@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
 //        noteDatabase = NoteDatabase.getInstance(getApplication());
 
 //        LiveData<List<Note>> notes = noteDatabase.notesDAO().getNotes();
-        mainViewModel = new MainViewModel(getApplication()); //
+//        mainViewModel = new MainViewModel(getApplication()); //
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
         mainViewModel.getNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {

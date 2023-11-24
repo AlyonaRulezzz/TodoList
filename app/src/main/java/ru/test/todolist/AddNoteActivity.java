@@ -1,6 +1,8 @@
 package ru.test.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +25,9 @@ public class AddNoteActivity extends AppCompatActivity {
     private Button btnSave;
 
 //    Database database = Database.getInstance();
-    private NoteDatabase noteDatabase;
-    private Handler handler = new Handler(Looper.getMainLooper());
+//    private NoteDatabase noteDatabase;
+    AddNoteViewModel addNoteViewModel;
+//    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,16 @@ public class AddNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addn_note);
 
         initViews();
-        noteDatabase = NoteDatabase.getInstance(getApplication());
+//        noteDatabase = NoteDatabase.getInstance(getApplication());
+        addNoteViewModel = new ViewModelProvider(this).get(AddNoteViewModel.class);
+        addNoteViewModel.getShouldCloseAddNoteActivity().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean shouldCloseAddNoteActivity) {
+                if (shouldCloseAddNoteActivity) {
+                    finish();
+                }
+            }
+        });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,19 +59,20 @@ public class AddNoteActivity extends AppCompatActivity {
         int priority = getPriority();
 
 //        database.add(new Note(database.getNotes().size(), text, priority));
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                noteDatabase.notesDAO().add(new Note(0, text, priority));
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                });
-            }
-        });
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+////                noteDatabase.notesDAO().add(new Note(0, text, priority));
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        finish();
+//                    }
+//                });
+//            }
+//        });
+//        thread.start();
+                addNoteViewModel.add(new Note(0, text, priority));
     }
 
     private int getPriority() {
