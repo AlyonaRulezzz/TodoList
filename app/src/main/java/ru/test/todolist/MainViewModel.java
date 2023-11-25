@@ -9,8 +9,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
@@ -34,7 +38,8 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void refreshNotes() {
-        Disposable disposable = noteDatabase.notesDAO().getNotes()
+//        Disposable disposable = noteDatabase.notesDAO().getNotes()
+        Disposable disposable = getNotesRx()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Note>>() {
@@ -45,9 +50,19 @@ public class MainViewModel extends AndroidViewModel {
                 });
         compositeDisposable.add(disposable);
     }
+    
+    private Single getNotesRx() {
+        return Single.fromCallable(new Callable<List<Note>>() {
+            @Override
+            public List<Note> call() throws Exception {
+                return noteDatabase.notesDAO().getNotes();
+            }
+        });
+    }
 
     public void remove(int id) {
-        Disposable disposable = noteDatabase.notesDAO().remove(id)
+//        Disposable disposable = noteDatabase.notesDAO().remove(id)
+        Disposable disposable = removeRx(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action() {
@@ -65,6 +80,15 @@ public class MainViewModel extends AndroidViewModel {
 //            }
 //        });
 //        thread.start();
+    }
+    
+    private Completable removeRx(int id) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Throwable {
+                noteDatabase.notesDAO().remove(id);
+            }
+        });
     }
 
     public void addAndShowCount() {
