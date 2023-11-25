@@ -31,8 +31,8 @@ public class AddNoteViewModel extends AndroidViewModel {
     }
 
     public void add(Note note) {
-//                Disposable disposable = notesDAO.add(note)
-                Disposable disposable = addRx(note)
+                Disposable disposable = notesDAO.add(note)
+//                Disposable disposable = addRx(note)
                         .subscribeOn(Schedulers.io())
 //                        .delay(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
@@ -60,15 +60,15 @@ public class AddNoteViewModel extends AndroidViewModel {
 //        thread.start();
     }
 
-    private Completable addRx(Note note) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Throwable {
-                notesDAO.add(note);
-//                throw new Exception(); //
-            }
-        });
-    }
+//    private Completable addRx(Note note) {
+//        return Completable.fromAction(new Action() {
+//            @Override
+//            public void run() throws Throwable {
+//                notesDAO.add(note);
+////                throw new Exception(); //
+//            }
+//        });
+//    }
 
     public LiveData<Boolean> getShouldCloseAddNoteActivity() {
         return shouldCloseAddNoteActivity;

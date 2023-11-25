@@ -97,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mainViewModel.refreshNotes();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        mainViewModel.refreshNotes();
+//    }
 }
