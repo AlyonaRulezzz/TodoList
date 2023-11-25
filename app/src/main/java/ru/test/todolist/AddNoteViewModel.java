@@ -20,8 +20,6 @@ public class AddNoteViewModel extends AndroidViewModel {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-//                noteDatabase.notesDAO().add(new Note(0, text, priority));
-//                addNoteViewModel.add(new Note(0, text, priority));
                 notesDAO.add(note);
                 shouldCloseAddNoteActivity.postValue(true);
             }

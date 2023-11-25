@@ -28,10 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private AdapterNotes adapterNotes;
     private MainViewModel mainViewModel;
 
-    //    private ArrayList<Note> notes = new ArrayList<>();
-//    private Database database = Database.getInstance();
-//    private NoteDatabase noteDatabase;
-
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initViews();
-//        noteDatabase = NoteDatabase.getInstance(getApplication());
-
-//        LiveData<List<Note>> notes = noteDatabase.notesDAO().getNotes();
-//        mainViewModel = new MainViewModel(getApplication()); //
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         mainViewModel.getNotes().observe(this, new Observer<List<Note>>() {
@@ -63,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
         adapterNotes.setIonNoteClickListener(new AdapterNotes.IonNoteClickListener() {
             @Override
             public void onNoteClick(Note note) {
-//                database.remove(note.getId());
-//                showNotes();
-                //
                 mainViewModel.addAndShowCount();
             }
         });
@@ -88,14 +77,6 @@ public class MainActivity extends AppCompatActivity {
                         int position = viewHolder.getAdapterPosition();
                         Note note = adapterNotes.getNotes().get(position);
                         mainViewModel.remove(note.getId());
-//                        database.remove(note.getId());
-//                        Thread thread = new Thread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                noteDatabase.notesDAO().remove(note.getId());
-//                            }
-//                        });
-//                        thread.start();
                     }
                 });
 
