@@ -31,7 +31,7 @@ public class AddNoteViewModel extends AndroidViewModel {
     public void add(Note note) {
                 Disposable disposable = notesDAO.add(note)
                         .subscribeOn(Schedulers.io())
-                        .delay(5, TimeUnit.SECONDS)
+//                        .delay(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Action() {
                             @Override

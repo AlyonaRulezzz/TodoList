@@ -96,4 +96,10 @@ public class MainActivity extends AppCompatActivity {
         rvNotes = findViewById(R.id.rvNotes);
         btnAdd = findViewById(R.id.btnAdd);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mainViewModel.refreshNotes();
+    }
 }
