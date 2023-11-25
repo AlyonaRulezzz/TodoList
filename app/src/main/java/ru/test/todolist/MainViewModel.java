@@ -43,11 +43,17 @@ public class MainViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Note>>() {
-                    @Override
-                    public void accept(List<Note> updatedNotesFromDB) throws Throwable {
-                        notes.setValue(updatedNotesFromDB);
-                    }
-                });
+                               @Override
+                               public void accept(List<Note> updatedNotesFromDB) throws Throwable {
+                                   notes.setValue(updatedNotesFromDB);
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Throwable {
+                                Log.d("MainViewModel", "getNotesRx load error");
+                            }
+                        });
         compositeDisposable.add(disposable);
     }
     
@@ -56,6 +62,7 @@ public class MainViewModel extends AndroidViewModel {
             @Override
             public List<Note> call() throws Exception {
                 return noteDatabase.notesDAO().getNotes();
+//                throw new Exception(); //
             }
         });
     }
@@ -66,12 +73,18 @@ public class MainViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action() {
-                    @Override
-                    public void run() throws Throwable {
-                        Log.d("MainViewModel", "remove" + id);
-                        refreshNotes();
-                    }
-                });
+                               @Override
+                               public void run() throws Throwable {
+                                   Log.d("MainViewModel", "remove" + id);
+                                   refreshNotes();
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Throwable {
+                                Log.d("MainViewModel", "remove error for id = " + id);
+                            }
+                        });
         compositeDisposable.add(disposable);
 //        Thread thread = new Thread(new Runnable() {
 //            @Override
@@ -87,6 +100,7 @@ public class MainViewModel extends AndroidViewModel {
             @Override
             public void run() throws Throwable {
                 noteDatabase.notesDAO().remove(id);
+//                throw new Exception(); //
             }
         });
     }

@@ -17,6 +17,7 @@ import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AddNoteViewModel extends AndroidViewModel {
@@ -36,12 +37,18 @@ public class AddNoteViewModel extends AndroidViewModel {
 //                        .delay(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Action() {
-                            @Override
-                            public void run() throws Throwable {
-                                shouldCloseAddNoteActivity.setValue(true);
-                                Log.d("AddNoteViewModel", "subscribe");
-                            }
-                        });
+                                       @Override
+                                       public void run() throws Throwable {
+                                           shouldCloseAddNoteActivity.setValue(true);
+                                           Log.d("AddNoteViewModel", "subscribe");
+                                       }
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Throwable {
+                                        Log.d("AddNoteViewModel", "subscribe error");
+                                    }
+                                });
                 compositeDisposable.add(disposable);
 //        Thread thread = new Thread(new Runnable() {
 //            @Override
@@ -58,6 +65,7 @@ public class AddNoteViewModel extends AndroidViewModel {
             @Override
             public void run() throws Throwable {
                 notesDAO.add(note);
+//                throw new Exception(); //
             }
         });
     }
